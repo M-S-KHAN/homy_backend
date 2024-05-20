@@ -1,9 +1,9 @@
 <?php
 
-$host = '127.0.0.1:3306';
+$host = 'db:3306';
 $db   = 'homy_db';
 $user = 'root';
-$pass = '';
+$pass = 'secret';
 $charset = 'utf8mb4';
 
 $dsn = "mysql:host=$host;dbname=$db;charset=$charset";

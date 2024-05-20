@@ -1,5 +1,5 @@
 # Use an official PHP runtime as a parent image with Apache
-FROM php:7.4-apache
+FROM php:8.1-apache
 
 # Set working directory
 WORKDIR /var/www/html
@@ -15,7 +15,9 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 COPY . /var/www/html/
 
 # Run Composer to install dependencies from your composer.json
-RUN composer install
+RUN composer install --no-scripts --no-autoloader
+
+COPY 000-default.conf /etc/apache2/sites-available/000-default.conf 
 
 # Expose port 80 to the outside once the container is running
 EXPOSE 80

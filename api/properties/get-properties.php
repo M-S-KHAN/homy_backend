@@ -28,14 +28,16 @@ try {
 
     // Fetch properties
     $query = "SELECT p.id, p.title, p.description, p.price, p.address, p.lat, p.lng, 
-                p.created_at, u.id as owner_id, u.username, u.email, u.profile_image_url, 
-                GROUP_CONCAT(pi.image_url) as images, 
-                (CASE WHEN f.user_id IS NOT NULL THEN 1 ELSE 0 END) as is_favorite
-              FROM properties p 
-              LEFT JOIN users u ON p.owner_id = u.id 
-              LEFT JOIN property_images pi ON pi.property_id = p.id
-              LEFT JOIN favorites f ON f.property_id = p.id AND f.user_id = :user_id
-              GROUP BY p.id, u.id";
+            p.created_at, u.id as owner_id, u.username, u.email, u.profile_image_url, 
+            GROUP_CONCAT(pi.image_url) as images, 
+            (CASE WHEN MAX(f.user_id) IS NOT NULL THEN 1 ELSE 0 END) as is_favorite
+        FROM properties p 
+        LEFT JOIN users u ON p.owner_id = u.id 
+        LEFT JOIN property_images pi ON pi.property_id = p.id
+        LEFT JOIN favorites f ON f.property_id = p.id AND f.user_id = :user_id
+        GROUP BY p.id, p.title, p.description, p.price, p.address, p.lat, p.lng, 
+       p.created_at, u.id, u.username, u.email, u.profile_image_url";
+
 
     $stmt = $pdo->prepare($query);
     $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
