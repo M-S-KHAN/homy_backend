@@ -50,22 +50,22 @@ try {
         $property['has_bidded'] = $property2 ? true : false;
 
         $property['images'] = $property['images'] ? explode(',', $property['images']) : [];
-        $property['isFavorite'] = (bool) $property['isFavorite'];
-        $property['price'] = (int) $property['price']; // Ensure price is an integer
+        $property['isFavorite'] = (bool)$property['isFavorite'];
+        $property['price'] = (int)$property['price']; // Ensure price is an integer
 
         http_response_code(200);
 
         echo json_encode(
             array(
-                "id" => (int) $property['id'],
+                "id" => (int)$property['id'],
                 "title" => $property['title'],
                 "description" => $property['description'],
-                "price" => (int) $property['price'],
+                "price" => (int)$property['price'],
                 "address" => $property['address'],
-                "lat" => (double) $property['lat'],
-                "lng" => (double) $property['lng'],
+                "lat" => (double)$property['lat'],
+                "lng" => (double)$property['lng'],
                 "owner" => array(
-                    "id" => (int) $property['owner_id'],
+                    "id" => (int)$property['owner_id'],
                     "username" => $property['username'],
                     "email" => $property['email'],
                     "profile_image_url" => $property['profile_image_url']
