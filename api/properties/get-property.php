@@ -17,15 +17,12 @@ if ($propertyId === null || $userId === null) {
 try {
     $query = "SELECT p.id, p.title, p.description, p.price, p.address, p.lat, p.lng, 
                 p.created_at, u.id as owner_id, u.username, u.email, u.profile_image_url, 
-                GROUP_CONCAT(pi.image_url) as images, 
                 MAX(CASE WHEN f.user_id IS NOT NULL THEN true ELSE false END) as isFavorite
               FROM properties p 
               LEFT JOIN users u ON p.owner_id = u.id 
-              LEFT JOIN property_images pi ON pi.property_id = p.id
               LEFT JOIN favorites f ON f.property_id = p.id AND f.user_id = :user_id
               WHERE p.id = :property_id
-              GROUP BY p.id, p.title, p.description, p.price, p.address, p.lat, p.lng, 
-                       p.created_at, u.id, u.username, u.email, u.profile_image_url";
+              GROUP BY p.id";
 
     $stmt = $pdo->prepare($query);
     $stmt->bindParam(':property_id', $propertyId, PDO::PARAM_INT);
@@ -38,18 +35,23 @@ try {
         http_response_code(404);
         echo json_encode(array("message" => "Property not found."));
     } else {
+        // Query to fetch images separately
+        $imagesQuery = "SELECT id, image_url FROM property_images WHERE property_id = :property_id";
+        $imagesStmt = $pdo->prepare($imagesQuery);
+        $imagesStmt->bindParam(':property_id', $propertyId, PDO::PARAM_INT);
+        $imagesStmt->execute();
+        $images = $imagesStmt->fetchAll(PDO::FETCH_ASSOC);
 
         // has_bidded
-        $query = "SELECT * FROM bids WHERE user_id = :user_id AND property_id = :property_id";
-        $stmt = $pdo->prepare($query);
-        $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
-        $stmt->bindParam(':property_id', $propertyId, PDO::PARAM_INT);
-        $stmt->execute();
+        $bidQuery = "SELECT * FROM bids WHERE user_id = :user_id AND property_id = :property_id";
+        $bidStmt = $pdo->prepare($bidQuery);
+        $bidStmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
+        $bidStmt->bindParam(':property_id', $propertyId, PDO::PARAM_INT);
+        $bidStmt->execute();
 
-        $property2 = $stmt->fetch(PDO::FETCH_ASSOC);
-        $property['has_bidded'] = $property2 ? true : false;
+        $property['has_bidded'] = $bidStmt->fetch(PDO::FETCH_ASSOC) ? true : false;
 
-        $property['images'] = $property['images'] ? explode(',', $property['images']) : [];
+        $property['images'] = $images;
         $property['isFavorite'] = (bool)$property['isFavorite'];
         $property['price'] = (int)$property['price']; // Ensure price is an integer
 

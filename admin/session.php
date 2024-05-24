@@ -10,3 +10,5 @@ if (!isLoggedIn()) {
     header('Location: login.php'); // Redirects to the login page if the user is not logged in (W3Schools)
     exit; // Exits the script
 }
+
+$is_admin = $_SESSION['role'] === 'admin';

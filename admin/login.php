@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             // Check if login is successful
             if ($response->getStatusCode() == 200 && isset($data['user'])) {
-                if ($data['user']['role'] == 'admin' || $data['user']['role'] == 'landlord') {
+                if ($data['user']['role'] == 'admin' || $data['user']['role'] == 'agent') {
                     $_SESSION['id'] = $data['user']['id']; // Set user_id in session
                     $_SESSION['email'] = $email; // Set email in session
                     $_SESSION['username'] = $data['user']['username']; // Set username in session
@@ -63,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html lang="en" class="fullscreen-bg">
 
 <head>
-    <title>Login | Klorofil - Free Bootstrap Dashboard Template</title>
+    <title>Login | Homy Admin</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">

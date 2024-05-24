@@ -73,7 +73,7 @@ if (isset($users['error'])) {
 <html lang="en">
 
 <head>
-    <title>Admin Home | Homy Real Estate</title>
+    <title>Users | Homy Real Estate</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
@@ -284,7 +284,7 @@ if (isset($users['error'])) {
         integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
         crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jQuery-slimScroll/1.3.0/jquery.slimscroll.min.js"></script>
-<script src="assets/scripts/klorofil-common.js"></script>
+<script src="assets/scripts/homy-common.js"></script>
 <script>
 
     $(document).ready(function () {
