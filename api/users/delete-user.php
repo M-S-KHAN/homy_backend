@@ -7,9 +7,10 @@ header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Methods: DELETE");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
-$data = json_decode(file_get_contents("php://input"));
+$admin_id = isset($_GET['admin_id']) ? $_GET['admin_id'] : null; // Assume the admin_id is the ID of the requester
+$user_id = isset($_GET['user_id']) ? $_GET['user_id'] : null;
 
-if (empty($data->user_id) || empty($data->admin_id)) {
+if (empty($user_id) || empty($admin_id)) {
     http_response_code(400);
     echo json_encode(array("message" => "Missing required information."));
     exit();
@@ -18,8 +19,8 @@ if (empty($data->user_id) || empty($data->admin_id)) {
 // Check if the requester is an admin or the user themselves
 $authQuery = "SELECT role FROM users WHERE id = :admin_id AND (role = 'admin' OR id = :user_id)";
 $authStmt = $pdo->prepare($authQuery);
-$authStmt->bindParam(':admin_id', $data->admin_id);
-$authStmt->bindParam(':user_id', $data->user_id);
+$authStmt->bindParam(':admin_id', $admin_id);
+$authStmt->bindParam(':user_id', $user_id);
 $authStmt->execute();
 
 if ($authStmt->rowCount() == 0) {
@@ -31,7 +32,7 @@ if ($authStmt->rowCount() == 0) {
 // Proceed with deleting the user
 $deleteQuery = "DELETE FROM users WHERE id = :user_id";
 $deleteStmt = $pdo->prepare($deleteQuery);
-$deleteStmt->bindParam(':user_id', $data->user_id);
+$deleteStmt->bindParam(':user_id', $user_id);
 
 try {
     if ($deleteStmt->execute()) {

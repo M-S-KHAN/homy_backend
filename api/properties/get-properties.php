@@ -28,7 +28,7 @@ try {
     }
 
     // Adjust the query based on the user's role
-    if ($userRole === 'admin') {
+    if ($userRole === 'admin' || $userRole === 'client') {
         $query = "SELECT p.id, p.title, p.description, p.price, p.address, p.lat, p.lng,
                   p.created_at, u.id as owner_id, u.username, u.email, u.profile_image_url,
                   GROUP_CONCAT(pi.image_url) as images,

@@ -377,15 +377,10 @@ if (isset($landlords['error'])) {
 
     $(document).ready(function () {
         $('.delete-landlord').click(function () {
-            var data = {
-                user_id: $(this).data('id'),
-                admin_id: <?= $_SESSION['id'] ?>
-            };
             if (confirm('Are you sure you want to delete this landlord?')) {
                 $.ajax({
-                    url: 'http://localhost/api/users/delete-user.php',
+                    url: 'http://localhost/api/users/delete-user.php?user_id=' + $(this).data('id') + '&admin_id=' + <?= $_SESSION['id'] ?>,
                     type: 'DELETE',
-                    data: JSON.stringify(data),
                     success: function (response) {
                         alert('Landlord deleted successfully');
                         window.location.reload();
