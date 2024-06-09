@@ -1,5 +1,5 @@
-version: '3.8'
-services:
+version: '3.8' # specify docker-compose version
+services:  # services to run
   web:
     build: .
     ports:
