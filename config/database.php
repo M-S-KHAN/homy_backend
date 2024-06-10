@@ -1,10 +1,10 @@
 <?php
 
-$host = 'db:3306';
-$db = 'homy_db';
-$user = 'root';
-$pass = 'secret';
-$charset = 'utf8mb4';
+$host = 'db:3306';  // docker-compose service name
+$db = 'homy_db';  // database name
+$user = 'root';  // database user
+$pass = 'secret';  // database password
+$charset = 'utf8mb4';  // database charset
 
 $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
 $options = [
